@@ -52,7 +52,7 @@ const generateObj = (arr) => {
         day : '',
         available : false,
         activity : false,
-        start_at : '',
+        time : '',
         teacher : '',
         location : '',
         detail : '',

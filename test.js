@@ -1,3 +1,8 @@
+const app = require('./app');
+const obj  = app.read();
+
+//console.log(obj[1]);
+
 'use strict';
 /**
  * Responds to any HTTP request.
@@ -22,8 +27,6 @@ const timetree = axiosBase.create({
     responseType: 'json'
 });
 
-// POST /calendars/:calendar_id/events のときのパラメーター
-// https://developers.timetreeapp.com/ja/docs/api#post-calendarscalendar_idevents
 let params = {
     data: {
         attributes: {
@@ -48,16 +51,26 @@ let params = {
     }
 };
 
-const dateMake = () => {
-    const dt = new Date();
-    const dt_end = new Date(dt.getTime() + 9 * 60 * 60 * 1000);
-    const isoStrStart = dt.toISOString();
-    const isoStrEnd = dt_end.toISOString();
+const divideTimeMs = (stringTime) => {
+    const [start, end] = stringTime.split('～');
+    const [startH, startM] = start.split(':');
+    const startMs = (startH * 3600 + startM * 60) * 1000; 
+    const [endH, endM] = end.split(':');
+    const endMs = (endH * 3600 + endM * 60) * 1000;
+    return [startMs, endMs];
+}
+
+const dateMake = (date, startMs, endMs) => {
+    const isoStrStart = (date*1000 + startMs).toISOString();
+    const isoStrEnd = (date*1000 + endMs).toISOString();
     return [isoStrStart, isoStrEnd];
 }
 
+console.log(divideTimeMs(obj[7].start_at));
+
 const jsonSet = () => {
-    const [start, end] = dateMake();
+    const [startMs, endMs] = divideTimeMs(obj[7].time)
+    const [start, end] = dateMake(startMs, endMs);
     let atr = params.data.attributes;
     atr.title = "部活"
     atr.start_at = start;
