@@ -66,6 +66,7 @@ const generateObj = (arr) => {
    return dataObj;
 }
 
+let flag = false;
 const rowSerch = (R) => {
     let data_row = Array(9);
     for (var C = 0; C <= 8; ++C) {
@@ -104,14 +105,15 @@ const rowSerch = (R) => {
     return data_row
 }
 
-let flag = false;
-const result = {};
-for (var R = 6; R <= 6+31-1; ++R) {
-    const data_row = rowSerch(R);
-    if (flag) {
-        break;
+exports.read = () => {
+    const result = {};
+    for (var R = 6; R <= 6 + 31 - 1; ++R) {
+        const data_row = rowSerch(R);
+        if (flag) {
+            break;
+        }
+        const params = generateObj(data_row);
+        result[R - 5] = params;
     }
-    const params = generateObj(data_row);
-    result[(R-5).toString()] = params;
+    return result;
 }
-console.log(result);
