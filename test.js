@@ -1,17 +1,9 @@
 const app = require('./app');
 const obj  = app.read();
 
-//console.log(obj[1]);
-
 'use strict';
-/**
- * Responds to any HTTP request.
- * @param {!express:request} req HTTP request context.
- * @param {!express:response} res HTTP response context.
- */
 const axiosBase = require('axios');
 require('dotenv').config();
-//const Promise = require('promise');
 
 // 環境変数(.env.yaml)
 const TIMETREE_PERSONAL_TOKEN = process.env.timetreetoken; // パーソナルアクセストークン
@@ -27,7 +19,8 @@ const timetree = axiosBase.create({
     responseType: 'json'
 });
 
-let params = {
+// オブジェクトのひな型
+const params = {
     data: {
         attributes: {
             category: 'schedule',
@@ -51,7 +44,9 @@ let params = {
     }
 };
 
+// "hh:mm～hh:mm" のフォーマットを[ms, ms] に変換
 const divideTimeMs = (stringTime) => {
+    console.log
     const [start, end] = stringTime.split('～');
     const [startH, startM] = start.split(':');
     const startMs = (startH * 3600 + startM * 60) * 1000; 
@@ -60,17 +55,18 @@ const divideTimeMs = (stringTime) => {
     return [startMs, endMs];
 }
 
+
+// unixtime into iso8601
 const dateMake = (date, startMs, endMs) => {
-    const isoStrStart = (date*1000 + startMs).toISOString();
-    const isoStrEnd = (date*1000 + endMs).toISOString();
+    const isoStrStart = new Date(date*1000 + startMs).toISOString();
+    const isoStrEnd = new Date(date*1000 + endMs).toISOString();
     return [isoStrStart, isoStrEnd];
 }
 
-console.log(divideTimeMs(obj[7].start_at));
-
 const jsonSet = () => {
     const [startMs, endMs] = divideTimeMs(obj[7].time)
-    const [start, end] = dateMake(startMs, endMs);
+    console.log({startMs})
+    const [start, end] = dateMake(obj[7].date ,startMs, endMs);
     let atr = params.data.attributes;
     atr.title = "部活"
     atr.start_at = start;
@@ -80,8 +76,9 @@ const jsonSet = () => {
 }
 
 const createEvent = () => {
+    console.log(obj[7]);
     jsonSet();
-    console.log(params);
+    console.log({params});
     timetree.post(`calendars/${TIMETREE_CALENDAR_ID}/events`, JSON.stringify(params))
         .then(res => {
             console.log(res)
