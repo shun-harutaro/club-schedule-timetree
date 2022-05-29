@@ -8,6 +8,9 @@ const axiosBase = require('axios');
 require('dotenv').config();
 //const Promise = require('promise');
 
+const app = require('./app');
+const obj = app.read();
+
 // 環境変数(.env.yaml)
 const TIMETREE_PERSONAL_TOKEN = process.env.timetreetoken; // パーソナルアクセストークン
 const TIMETREE_CALENDAR_ID = process.env.timetreeid; // calendarid
@@ -24,7 +27,7 @@ const timetree = axiosBase.create({
 
 // POST /calendars/:calendar_id/events のときのパラメーター
 // https://developers.timetreeapp.com/ja/docs/api#post-calendarscalendar_idevents
-let params = {
+const params = {
     data: {
         attributes: {
             category: 'schedule',
@@ -40,7 +43,7 @@ let params = {
         relationships: {
             label: {
                 data: {
-                    id: `${TIMETREE_CALENDAR_ID},6`, // ラベル（未提出:#e73b3b）
+                    id: `${TIMETREE_CALENDAR_ID},1`, // ラベル（未提出:#e73b3b）
                     type: "label"
                 }
             }
@@ -48,16 +51,26 @@ let params = {
     }
 };
 
-const dateMake = () => {
-    const dt = new Date();
-    const dt_end = new Date(dt.getTime() + 9 * 60 * 60 * 1000);
-    const isoStrStart = dt.toISOString();
-    const isoStrEnd = dt_end.toISOString();
+// "hh:mm～hh:mm" のフォーマットを[ms, ms] に変換
+const divideTimeMs = (stringTime) => {
+    const [start, end] = stringTime.split('～');
+    const [startH, startM] = start.split(':');
+    const startMs = (startH * 3600 + startM * 60) * 1000; 
+    const [endH, endM] = end.split(':');
+    const endMs = (endH * 3600 + endM * 60) * 1000;
+    return [startMs, endMs];
+}
+
+// unixtime into iso8601
+const dateMake = (date, startMs, endMs) => {
+    const isoStrStart = new Date(date*1000 + startMs).toISOString();
+    const isoStrEnd = new Date(date*1000 + endMs).toISOString();
     return [isoStrStart, isoStrEnd];
 }
 
 const jsonSet = () => {
-    const [start, end] = dateMake();
+    const [startMs, endMs] = divideTimeMs(obj[8].time)
+    const [start, end] = dateMake(obj[8].date ,startMs, endMs);
     let atr = params.data.attributes;
     atr.title = "部活"
     atr.start_at = start;
@@ -68,7 +81,7 @@ const jsonSet = () => {
 
 const createEvent = () => {
     jsonSet();
-    console.log(params);
+    console.log({params});
     timetree.post(`calendars/${TIMETREE_CALENDAR_ID}/events`, JSON.stringify(params))
         .then(res => {
             console.log(res)

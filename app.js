@@ -77,7 +77,7 @@ const rowSerch = (R) => {
                 const date = sheet[cell_ref].v;
                 if (date === '') {
                     flag = true;
-                    console.log("error");
+                    console.log("Not exist the data of " + (R-5).toString());
                     break;
                 }
                 data_row[C] = exelToUnixTime(date);
