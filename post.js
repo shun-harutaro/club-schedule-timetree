@@ -64,8 +64,9 @@ const divideTimeMs = (stringTime) => {
 
 // unixtime into iso8601
 const dateMake = (date, startMs, endMs) => {
-    const isoStrStart = new Date(date*1000 + startMs).toISOString();
-    const isoStrEnd = new Date(date*1000 + endMs).toISOString();
+    const timeDiffJST = 9 * 60 * 60 * 1000; // JST to UTC
+    const isoStrStart = new Date(date*1000 + startMs - timeDiffJST).toISOString();
+    const isoStrEnd = new Date(date*1000 + endMs - timeDiffJST).toISOString();
     return [isoStrStart, isoStrEnd];
 }
 
