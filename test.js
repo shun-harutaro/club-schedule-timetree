@@ -1,3 +1,5 @@
+// This file is for the test of generating and posting. 
+
 const app = require('./app');
 const obj  = app.read();
 

@@ -1,3 +1,4 @@
+/* This file for API */
 'use strict';
 /**
  * Responds to any HTTP request.
@@ -8,8 +9,8 @@ const axiosBase = require('axios');
 require('dotenv').config();
 //const Promise = require('promise');
 
-const app = require('./app');
-const obj = app.read();
+//const app = require('./app');
+//const obj = app.read();
 
 // 環境変数(.env.yaml)
 const TIMETREE_PERSONAL_TOKEN = process.env.timetreetoken; // パーソナルアクセストークン
@@ -68,9 +69,10 @@ const dateMake = (date, startMs, endMs) => {
     return [isoStrStart, isoStrEnd];
 }
 
-const jsonSet = () => {
-    const [startMs, endMs] = divideTimeMs(obj[8].time)
-    const [start, end] = dateMake(obj[8].date ,startMs, endMs);
+const jsonSet = (index, obj) => {
+    //console.log({index});
+    const [startMs, endMs] = divideTimeMs(obj[index].time)
+    const [start, end] = dateMake(obj[index].date ,startMs, endMs);
     let atr = params.data.attributes;
     atr.title = "部活"
     atr.start_at = start;
@@ -79,9 +81,10 @@ const jsonSet = () => {
     atr.location = "ホール"
 }
 
-const createEvent = () => {
-    jsonSet();
-    console.log({params});
+exports.createEvent = (index, obj) => {
+    //console.log({index});
+    jsonSet(index, obj);
+    //console.log({params});
     timetree.post(`calendars/${TIMETREE_CALENDAR_ID}/events`, JSON.stringify(params))
         .then(res => {
             console.log(res)
@@ -90,5 +93,3 @@ const createEvent = () => {
             console.log(err)
         });
 }
-
-createEvent()

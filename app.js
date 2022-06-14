@@ -1,3 +1,4 @@
+/* This file extracts xlsx file and generates object */
 const XLSX = require("xlsx");
 const book = XLSX.readFile('test.xlsm');
 
