@@ -54,13 +54,11 @@ const params = {
 
 // "hh:mm～hh:mm" のフォーマットを[ms, ms] に変換
 const divideTimeMs = (stringTime) => {
-    console.log({stringTime});
     const [start, end] = stringTime.split('～');
     const [startH, startM] = start.split(':');
     const startMs = (startH * 3600 + startM * 60) * 1000; 
     const [endH, endM] = end.split(':');
     const endMs = (endH * 3600 + endM * 60) * 1000;
-    console.log({startMs, endMs});
     return [startMs, endMs];
 }
 
@@ -73,7 +71,7 @@ const dateMake = (date, startMs, endMs) => {
 }
 
 const jsonSet = (index, obj) => {
-    console.log({obj});
+    //console.log({obj});
     let atr = params.data.attributes;
     const [startMs, endMs] = divideTimeMs(obj[index].time)
     if (isNaN(startMs + endMs)) {
@@ -85,9 +83,10 @@ const jsonSet = (index, obj) => {
         atr.start_at = start;
         atr.end_at = end;
     }
-    atr.title = "部活"
-    atr.description = "これはテストです"
-    atr.location = "ホール"
+    atr.title = "部活";
+    atr.location = obj[index].location;
+    atr.description = "これはテストです";
+    console.log({atr});
 }
 
 exports.createEvent = (index, obj) => {
