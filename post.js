@@ -71,7 +71,6 @@ const dateMake = (date, startMs, endMs) => {
 }
 
 const jsonSet = (index, obj) => {
-    //console.log({obj});
     let atr = params.data.attributes;
     const [startMs, endMs] = divideTimeMs(obj[index].time)
     if (isNaN(startMs + endMs)) {
@@ -85,7 +84,9 @@ const jsonSet = (index, obj) => {
     }
     atr.title = "部活";
     atr.location = obj[index].location;
-    atr.description = "これはテストです";
+    atr.description = `- 担当教員：${obj[index].teacher}
+- 活動可能場所：${obj[index].detail}
+- 備考：${obj[index].remark}`;
     console.log({atr});
 }
 
@@ -96,7 +97,7 @@ exports.createEvent = (index, obj) => {
     //console.log({index});
     jsonSet(index, obj);
     //console.log({params});
-    /*
+    
     timetree.post(`calendars/${TIMETREE_CALENDAR_ID}/events`, JSON.stringify(params))
         .then(res => {
             console.log(res)
@@ -104,6 +105,6 @@ exports.createEvent = (index, obj) => {
         .catch(err => {
             console.log(err)
         });
-    */
+    
     return 0;
 }
