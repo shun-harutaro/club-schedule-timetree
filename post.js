@@ -7,10 +7,6 @@
  */
 const axiosBase = require('axios');
 require('dotenv').config();
-//const Promise = require('promise');
-
-//const app = require('./app');
-//const obj = app.read();
 
 // 環境変数(.env.yaml)
 const TIMETREE_PERSONAL_TOKEN = process.env.timetreetoken; // パーソナルアクセストークン
@@ -94,10 +90,7 @@ exports.createEvent = (index, obj) => {
     if (obj[index].activity !== true) {
         return 0;
     }
-    //console.log({index});
     jsonSet(index, obj);
-    //console.log({params});
-    
     timetree.post(`calendars/${TIMETREE_CALENDAR_ID}/events`, JSON.stringify(params))
         .then(res => {
             console.log(res)
@@ -105,6 +98,5 @@ exports.createEvent = (index, obj) => {
         .catch(err => {
             console.log(err)
         });
-    
     return 0;
 }
