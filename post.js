@@ -71,21 +71,33 @@ const dateMake = (date, startMs, endMs) => {
 }
 
 const jsonSet = (index, obj) => {
-    //console.log({index});
-    const [startMs, endMs] = divideTimeMs(obj[index].time)
-    const [start, end] = dateMake(obj[index].date ,startMs, endMs);
     let atr = params.data.attributes;
-    atr.title = "部活"
-    atr.start_at = start;
-    atr.end_at = end;
-    atr.description = "これはテストです"
-    atr.location = "ホール"
+    const [startMs, endMs] = divideTimeMs(obj[index].time)
+    if (isNaN(startMs + endMs)) {
+        console.log("Time couldn't convert to Number");
+        atr.all_day = true;
+        return 0;
+    } else {
+        const [start, end] = dateMake(obj[index].date ,startMs, endMs);
+        atr.start_at = start;
+        atr.end_at = end;
+    }
+    atr.title = "部活";
+    atr.location = obj[index].location;
+    atr.description = `- 担当教員：${obj[index].teacher}
+- 活動可能場所：${obj[index].detail}
+- 備考：${obj[index].remark}`;
+    console.log({atr});
 }
 
 exports.createEvent = (index, obj) => {
+    if (obj[index].activity !== true) {
+        return 0;
+    }
     //console.log({index});
     jsonSet(index, obj);
     //console.log({params});
+    
     timetree.post(`calendars/${TIMETREE_CALENDAR_ID}/events`, JSON.stringify(params))
         .then(res => {
             console.log(res)
@@ -93,4 +105,6 @@ exports.createEvent = (index, obj) => {
         .catch(err => {
             console.log(err)
         });
+    
+    return 0;
 }
