@@ -1,31 +1,6 @@
-/* This file for API */
+/* This file make request */
 'use strict';
-/**
- * Responds to any HTTP request.
- * @param {!express:request} req HTTP request context.
- * @param {!express:response} res HTTP response context.
- */
-const axiosBase = require('axios');
-require('dotenv').config();
-//const Promise = require('promise');
-
-//const app = require('./app');
-//const obj = app.read();
-
-// 環境変数(.env.yaml)
-const TIMETREE_PERSONAL_TOKEN = process.env.timetreetoken; // パーソナルアクセストークン
-const TIMETREE_CALENDAR_ID = process.env.timetreeid; // calendarid
-
-const timetree = axiosBase.create({
-    baseURL: 'https://timetreeapis.com/', // クライアント
-    headers: {
-      'Content-Type': 'application/json', // データ形式
-      'Accept': 'application/vnd.timetree.v1+json', //APIバージョン
-      'Authorization': `Bearer ${TIMETREE_PERSONAL_TOKEN}` // パーソナルアクセストークンによる認証
-    },
-    responseType: 'json'
-});
-
+const TIMETREE_CALENDAR_ID = process.env.timetreeid;
 // POST /calendars/:calendar_id/events のときのパラメーター
 // https://developers.timetreeapp.com/ja/docs/api#post-calendarscalendar_idevents
 const params = {
@@ -44,7 +19,7 @@ const params = {
         relationships: {
             label: {
                 data: {
-                    id: `${TIMETREE_CALENDAR_ID},1`, // ラベル（未提出:#e73b3b）
+                    id: `${TIMETREE_CALENDAR_ID},1`, // ラベル（活動予定）
                     type: "label"
                 }
             }
@@ -64,32 +39,30 @@ const divideTimeMs = (stringTime) => {
 
 // unixtime into iso8601
 const dateMake = (date, startMs, endMs) => {
-    const isoStrStart = new Date(date*1000 + startMs).toISOString();
-    const isoStrEnd = new Date(date*1000 + endMs).toISOString();
+    const timeDiffJST = 9 * 60 * 60 * 1000; // JST to UTC
+    const isoStrStart = new Date(date*1000 + startMs - timeDiffJST).toISOString();
+    const isoStrEnd = new Date(date*1000 + endMs - timeDiffJST).toISOString();
     return [isoStrStart, isoStrEnd];
 }
 
-const jsonSet = (index, obj) => {
-    //console.log({index});
-    const [startMs, endMs] = divideTimeMs(obj[index].time)
-    const [start, end] = dateMake(obj[index].date ,startMs, endMs);
+exports.jsonSet = (obj) => {
     let atr = params.data.attributes;
-    atr.title = "部活"
+    const [startMs, endMs] = divideTimeMs(obj.time)
+    let start, end;
+    if (isNaN(startMs + endMs)) {
+        console.log("Time couldn't convert to Number");
+        start = end = new Date (obj.date*1000).toISOString();
+        atr.all_day = true;
+    } else {
+        [start, end] = dateMake(obj.date ,startMs, endMs);
+        atr.all_day = false;
+    }
     atr.start_at = start;
     atr.end_at = end;
-    atr.description = "これはテストです"
-    atr.location = "ホール"
-}
-
-exports.createEvent = (index, obj) => {
-    //console.log({index});
-    jsonSet(index, obj);
-    //console.log({params});
-    timetree.post(`calendars/${TIMETREE_CALENDAR_ID}/events`, JSON.stringify(params))
-        .then(res => {
-            console.log(res)
-        })
-        .catch(err => {
-            console.log(err)
-        });
+    atr.title = "部活";
+    atr.location = obj.location;
+    atr.description = `- 担当教員：${obj.teacher}
+- 活動可能場所：${obj.detail}
+- 備考：${obj.remark}`;
+    return params;
 }
