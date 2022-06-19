@@ -19,7 +19,7 @@ const params = {
         relationships: {
             label: {
                 data: {
-                    id: `${TIMETREE_CALENDAR_ID},3`, // ラベル（未提出:#e73b3b）
+                    id: `${TIMETREE_CALENDAR_ID},4`, // ラベル（未提出:#e73b3b）
                     type: "label"
                 }
             }
@@ -46,18 +46,19 @@ const dateMake = (date, startMs, endMs) => {
 }
 
 exports.jsonSet = (obj) => {
-    
     let atr = params.data.attributes;
     const [startMs, endMs] = divideTimeMs(obj.time)
+    let start, end;
     if (isNaN(startMs + endMs)) {
         console.log("Time couldn't convert to Number");
+        start = end = new Date (obj.date*1000).toISOString();
         atr.all_day = true;
-        return 0;
     } else {
-        const [start, end] = dateMake(obj.date ,startMs, endMs);
-        atr.start_at = start;
-        atr.end_at = end;
+        [start, end] = dateMake(obj.date ,startMs, endMs);
+        atr.all_day = false;
     }
+    atr.start_at = start;
+    atr.end_at = end;
     atr.title = "部活";
     atr.location = obj.location;
     atr.description = `- 担当教員：${obj.teacher}
