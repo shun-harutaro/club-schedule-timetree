@@ -29,29 +29,22 @@ const items = Object.keys(OBJ).length;
 
 const postAll = async () => {
     for (var i = 0; i < items; i++) {
-        console.log(`schedule of ${i+1}`);
         const obj = OBJ[i + 1];
         if (obj.activity !== true) {
-            console.log(`There aren't activity`);
+            console.log(`There aren't activity #${i+1}`);
             continue;
         }
         const params = POST.jsonSet(obj);
         await timetree.post(`calendars/${TIMETREE_CALENDAR_ID}/events`, JSON.stringify(params))
         .then(res => {
-            console.log("success");
+            console.log(`success #${i+1}`);
         })
         .catch(err => {
-            console.log("faild");
-            const code = err.response.data.errors;
-            console.log({code});
+            console.log(`faild #${i+1}`);
+            const errData = err.response.data.errors;
+            console.log({errData});
         });
     }
     console.log(`${items} items are done`);
 }
 postAll();
-
-/*
-const obj = OBJ[20];
-const params = POST.jsonSet(obj);
-timetree.post(`calendars/${TIMETREE_CALENDAR_ID}/events`, JSON.stringify(params));
-*/

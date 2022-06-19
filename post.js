@@ -66,19 +66,3 @@ exports.jsonSet = (obj) => {
 - 備考：${obj.remark}`;
     return params;
 }
-
-/*
-exports.createEvent = (obj) => {
-    jsonSet(obj);
-    timetree.post(`calendars/${TIMETREE_CALENDAR_ID}/events`, JSON.stringify(params))
-        .then(res => {
-            console.log("success");
-            return res;
-        })
-        .catch(err => {
-            console.log("faild");
-            console.log({err});
-            return err.response;
-        });
-}
-*/
