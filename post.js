@@ -19,7 +19,7 @@ const params = {
         relationships: {
             label: {
                 data: {
-                    id: `${TIMETREE_CALENDAR_ID},4`, // ラベル（未提出:#e73b3b）
+                    id: `${TIMETREE_CALENDAR_ID},1`, // ラベル（活動予定）
                     type: "label"
                 }
             }
