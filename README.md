@@ -15,7 +15,7 @@ echo "file name = [xxxx.xlsm]
 ```
 6. 実行する
 ```
-
+yarn install
 node main.js
 ```
 ## Structure
