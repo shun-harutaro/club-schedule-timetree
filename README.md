@@ -1,15 +1,19 @@
 # club-schedule-timetree
 ## Usage
-1. リポジトリをクローン
-2. フォルダ内に使いたいエクセルファイルを入れる
-3. .env ファイルを作成し、パーソナルアクセストークン・カレンダーID・エクセルファイルの名前を記述
+1. パーソナルアクセストークンの入手
+    - https://timetreeapp.com/developers/personal_access_tokens より
+2. カレンダーID の確認
+    - 使用したいカレンダーを選択しURL(`https://timetreeapp.com/calendars/xxxxxxxx`)の xxxxxx の部分がID
+3. リポジトリをクローン
+4. フォルダ内に使いたいエクセルファイルを入れる
+5. .env ファイルを作成し、パーソナルアクセストークン・カレンダーID・エクセルファイルの名前を記述
 ```
 touch .env
 echo "token = [personal access token]"
 echo "calendarid = [calendar id]"
 echo "file name = [xxxx.xlsm]
 ```
-4. 実行する
+6. 実行する
 ```
 node main.js
 ```
@@ -19,4 +23,6 @@ node main.js
 - setParam.js
     - APIに適した形式に整えたオブジェクトを返す
 - main.js
-    実行するファイル。上記２ファイルをライブラリとして読み込みAPIにPOSTする
+    - 実行するファイル。上記２ファイルをライブラリとして読み込みAPIにPOSTする
+## Reference
+https://developers.timetreeapp.com/ja/docs/api/oauth-app
