@@ -9,8 +9,8 @@
  require('dotenv').config();
  
  // 環境変数(.env.yaml)
- const TIMETREE_PERSONAL_TOKEN = process.env.timetreetoken; // パーソナルアクセストークン
- const TIMETREE_CALENDAR_ID = process.env.timetreeid; // calendarid
+ const TIMETREE_PERSONAL_TOKEN = process.env.token; // パーソナルアクセストークン
+ const TIMETREE_CALENDAR_ID = process.env.calendarid; // calendarid
  
  const timetree = axiosBase.create({
      baseURL: 'https://timetreeapis.com/', // クライアント

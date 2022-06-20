@@ -93,6 +93,5 @@ sw.*
 .firebase
 
 memo
-.xlsx
-
-test.xlsm
+*.xlsx
+*.xlsm

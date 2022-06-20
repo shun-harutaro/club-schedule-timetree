@@ -1,6 +1,6 @@
 /* This file make request */
 'use strict';
-const TIMETREE_CALENDAR_ID = process.env.timetreeid;
+const TIMETREE_CALENDAR_ID = process.env.calendarid;
 // POST /calendars/:calendar_id/events のときのパラメーター
 // https://developers.timetreeapp.com/ja/docs/api#post-calendarscalendar_idevents
 const params = {
