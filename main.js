@@ -22,9 +22,9 @@
      responseType: 'json'
  });
 
-const APP = require('./app');
-const POST = require('./post');
-const OBJ = APP.read();
+const JSON = require('./convertJson');
+const SET_PARAM = require('./setParam');
+const OBJ = JSON.read();
 const items = Object.keys(OBJ).length;
 
 const postAll = async () => {
@@ -34,7 +34,7 @@ const postAll = async () => {
             console.log(`There aren't activity #${i+1}`);
             continue;
         }
-        const params = POST.jsonSet(obj);
+        const params = SET_PARAM.setParam(obj);
         await timetree.post(`calendars/${TIMETREE_CALENDAR_ID}/events`, JSON.stringify(params))
         .then(res => {
             console.log(`success #${i+1}`);

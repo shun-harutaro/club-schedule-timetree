@@ -45,7 +45,7 @@ const dateMake = (date, startMs, endMs) => {
     return [isoStrStart, isoStrEnd];
 }
 
-exports.jsonSet = (obj) => {
+exports.setParam = (obj) => {
     let atr = params.data.attributes;
     const [startMs, endMs] = divideTimeMs(obj.time)
     let start, end;
