@@ -9,9 +9,9 @@
 5. .env ファイルを作成し、パーソナルアクセストークン・カレンダーID・エクセルファイルの名前を記述
 ```
 touch .env
-echo "token = [personal access token]"
-echo "calendarid = [calendar id]"
-echo "file name = [xxxx.xlsm]
+echo "token = [personal access token]" >> .env
+echo "calendarid = [calendar id]" >> .env
+echo "file name = [xxxx.xlsm] >> .env
 ```
 6. 実行する
 ```
