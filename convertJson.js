@@ -97,7 +97,7 @@ const rowSerch = (R) => {
                 }
                 break;
         }
-        if (data_row[2] == false || data_row[3] == false) {
+        if (data_row[2] == false && data_row[3] == false) {
             break;
         }
         if (flag) {
@@ -105,6 +105,7 @@ const rowSerch = (R) => {
             break;
         }
     }
+    console.log({data_row});
     return data_row
 }
 
