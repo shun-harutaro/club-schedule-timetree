@@ -19,7 +19,7 @@ const params = {
         relationships: {
             label: {
                 data: {
-                    id: `${TIMETREE_CALENDAR_ID},0`, // ラベル
+                    id: `${TIMETREE_CALENDAR_ID},8`, // ラベル
                     type: "label"
                 }
             }

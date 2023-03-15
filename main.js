@@ -22,9 +22,9 @@
      responseType: 'json'
  });
 
-const JSON = require('./convertJson');
+const CONVERT_JSON = require('./convertJson');
 const SET_PARAM = require('./setParam');
-const OBJ = JSON.read();
+const OBJ = CONVERT_JSON.read();
 const items = Object.keys(OBJ).length;
 
 const postAll = async () => {
