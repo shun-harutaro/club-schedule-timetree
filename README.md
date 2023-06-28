@@ -11,7 +11,7 @@
 touch .env
 echo "token = [personal access token]" >> .env
 echo "calendarid = [calendar id]" >> .env
-echo "file name = [xxxx.xlsm] >> .env
+echo "filename = [xxxx.xlsm] >> .env
 ```
 6. 実行する
 ```
