@@ -1,4 +1,6 @@
 # club-schedule-timetree
+## ⚠️TimeTree API 終了により、アーカイブされています。
+https://timetreeapp.com/intl/ja/newsroom/2023-12-14/connect-app-api-202312
 ## Usage
 1. パーソナルアクセストークンの入手
     - https://timetreeapp.com/developers/personal_access_tokens より
